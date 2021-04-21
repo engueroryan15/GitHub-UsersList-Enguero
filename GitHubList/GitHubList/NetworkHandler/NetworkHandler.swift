@@ -54,6 +54,39 @@ class NetworkHandler: NSObject {
             }
     }
     
+    
+    func getUserDetails(url: String, completionHandler: @escaping (UserDetails) -> Void){
+        
+        AF.request(url)
+                .responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        print(value)
+                        let errorValue = value
+                        let jsonData = self.jsonToData(json: value)
+                        let decoder = JSONDecoder()
+                        
+                        UserDefaults.standard.setValue(jsonData, forKey: "jsonData")
+
+                        do {
+                            let response = try decoder.decode(UserDetails.self, from: jsonData!)
+                            print(response)
+                            completionHandler(response)
+                        } catch let error  {
+                            print("Parsing Failed \(error.localizedDescription)")
+                            debugPrint(error)
+                            
+                            NotificationCenter.default.post(name: Notification.Name("NotificationIdentifier"), object: nil, userInfo: errorValue as? [AnyHashable : Any])
+                            
+                        }
+                        
+                    case .failure(let error):
+                        print(error)
+                      
+                    }
+            }
+    }
+    
     func jsonToData(json: Any) -> Data? {
         do {
             return try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted)
