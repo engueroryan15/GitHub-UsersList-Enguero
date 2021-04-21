@@ -10,10 +10,13 @@ import UIKit
 class UserListTableViewController: UITableViewController {
 
     var users : [UserList] = []
+//    var userDetails = UserDetails()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.title = "GITHUB USERS"
         
         self.tableView.register(UserListTableViewCell.self, forCellReuseIdentifier: "UserListTableViewCell")
         self.tableView.separatorStyle = .none
@@ -95,6 +98,22 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     
+        let user = self.users[indexPath.row]
+        
+        NetworkHandler().getUserDetails(url: "\(gitHubUserListUrl)/" + user.login, completionHandler: { [self] (userDetails) in
+            print(users)
+            DispatchQueue.main.async {
+                let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "UserDetailsViewController") as? UserDetailsViewController
+                vc?.avatarUrl = user.avatar_url
+                vc?.getUserDetails(userDetails: userDetails, accountType: user.type)
+                self.navigationController?.pushViewController(vc!, animated: true)
+            }
+            
+        })
     }
     
 

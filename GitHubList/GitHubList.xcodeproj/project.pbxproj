@@ -23,6 +23,8 @@
 		F1EA6E422630442D0085BE14 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EA6E412630442D0085BE14 /* UserListTableViewCell.swift */; };
 		F1EA6E4B263045070085BE14 /* UserList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EA6E4A263045070085BE14 /* UserList.swift */; };
 		F1EA6E5726304E250085BE14 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EA6E5626304E250085BE14 /* UIImageView+Extensions.swift */; };
+		F1EA6E62263072730085BE14 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EA6E61263072730085BE14 /* UserDetails.swift */; };
+		F1EA6E67263078310085BE14 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EA6E66263078310085BE14 /* UserDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		F1EA6E412630442D0085BE14 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		F1EA6E4A263045070085BE14 /* UserList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserList.swift; sourceTree = "<group>"; };
 		F1EA6E5626304E250085BE14 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		F1EA6E61263072730085BE14 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
+		F1EA6E66263078310085BE14 /* UserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewController.swift; sourceTree = "<group>"; };
 		F43EC33A260062572BC33D33 /* Pods-GitHubList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubList.debug.xcconfig"; path = "Target Support Files/Pods-GitHubList/Pods-GitHubList.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				F1EA6E38263043BF0085BE14 /* UserListTableViewController.swift */,
+				F1EA6E66263078310085BE14 /* UserDetailsViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				F1EA6E4A263045070085BE14 /* UserList.swift */,
+				F1EA6E61263072730085BE14 /* UserDetails.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,10 +403,12 @@
 			files = (
 				F1EA6E5726304E250085BE14 /* UIImageView+Extensions.swift in Sources */,
 				F1EA6DE9263040D20085BE14 /* ViewController.swift in Sources */,
+				F1EA6E67263078310085BE14 /* UserDetailsViewController.swift in Sources */,
 				F1EA6E4B263045070085BE14 /* UserList.swift in Sources */,
 				F1EA6DE5263040D20085BE14 /* AppDelegate.swift in Sources */,
 				F1EA6E422630442D0085BE14 /* UserListTableViewCell.swift in Sources */,
 				F1EA6DEF263040D20085BE14 /* GitHubList.xcdatamodeld in Sources */,
+				F1EA6E62263072730085BE14 /* UserDetails.swift in Sources */,
 				F1EA6E39263043BF0085BE14 /* UserListTableViewController.swift in Sources */,
 				F1EA6E22263041EB0085BE14 /* NetworkHandler.swift in Sources */,
 				F1EA6DE7263040D20085BE14 /* SceneDelegate.swift in Sources */,
