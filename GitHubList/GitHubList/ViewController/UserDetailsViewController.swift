@@ -12,6 +12,7 @@ class UserDetailsViewController: UIViewController {
     var userDetails : UserDetails?
     var avatarUrl : String?
     
+    
     var avatarImgView : UIImageView = {
         let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         imgView.contentMode = .scaleAspectFit
@@ -69,13 +70,6 @@ class UserDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationItem.backBarButtonItem?.title = ""
-//        self.navigationItem.backBarButtonItem?.tintColor = UIColor.black
-        
-        self.navigationController?.navigationBar.topItem?.title = ""
-        self.navigationController?.navigationBar.tintColor = UIColor.black
-       
-
         // Do any additional setup after loading the view.
     }
     
@@ -89,10 +83,10 @@ class UserDetailsViewController: UIViewController {
         avatarImgView.downloadImageUsingAF(url: avatarUrl!)
         
         lblFollowing.frame  = CGRect(x: 0, y: avatarImgView.frame.height + height + 60, width:self.view.frame.width/2, height: 50)
-        lblFollowing.text = "FOLLOWING: \(userDetails.following )"
+        lblFollowing.text = "FOLLOWING: \(userDetails.following ?? 0)"
         
         lblFollowers.frame  = CGRect(x: lblFollowing.frame.width, y: avatarImgView.frame.height + height + 60, width:self.view.frame.width/2, height: 50)
-        lblFollowers.text = "FOLLOWERS: \(userDetails.followers )"
+        lblFollowers.text = "FOLLOWERS: \(userDetails.followers ?? 0)"
         
         lblName.frame =  CGRect(x: 10, y: avatarImgView.frame.height + lblFollowing.frame.height + height + 60, width:self.view.frame.width-20, height: 100)
         lblName.text = "  NAME: \n  \(userDetails.name ?? "")"

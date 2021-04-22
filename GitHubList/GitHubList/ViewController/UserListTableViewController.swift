@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Network
 
-class UserListTableViewController: UITableViewController {
+class UserListTableViewController: UITableViewController, UISearchBarDelegate {
 
     var users : [UserList] = []
-//    var userDetails = UserDetails()
+    
+    let monitor = NWPathMonitor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,20 +25,70 @@ class UserListTableViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("NotificationIdentifier"), object: nil)
         
-        NetworkHandler().getUserList(url: gitHubUserListUrl, completionHandler: { (users) in
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                NetworkHandler().getUserList(url: gitHubUserListUrl, completionHandler: { (users) in
+                    print(users)
+                    self.users = users
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+            
+                })
+            }else{
+                DispatchQueue.main.async {
+                    let decoder = JSONDecoder()
+                    do {
+                        let response = try decoder.decode([UserList].self, from: UserDefaults.standard.data(forKey: "jsonData")!)
+                        print(response)
+                        self.users = response
+                    } catch let error  {
+                        print("Parsing Failed \(error.localizedDescription)")
+                        debugPrint(error)
+                        
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+         
+            print(path.isExpensive)
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        
+        monitor.start(queue: queue)
+       
+        
+          let refreshControl = UIRefreshControl()
+            refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+            refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView.refreshControl = refreshControl
+    
+    }
+ 
+
+    
+    @objc func refresh(_ sender: AnyObject) {
+       // Code to refresh table view
+        
+        print("Refresh")
+        print(String(describing: self.users.last?.id))
+        
+        let id = self.users.last?.id
+        
+        
+        NetworkHandler().getUserList(url: gitHubUserListUrl + "?since=\(id!)", completionHandler: { (users) in
             print(users)
             self.users = users
             DispatchQueue.main.async {
+                self.tableView.refreshControl?.endRefreshing()
                 self.tableView.reloadData()
             }
-            
+    
         })
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
@@ -75,9 +127,9 @@ class UserListTableViewController: UITableViewController {
         // Configure the cell...
         let user = self.users[indexPath.row]
         
-        cell.avatarImg.downloadImageUsingAF(url: user.avatar_url)
-        cell.lblUserName.text = "@" + user.login
-        cell.lblHtmlUrl.text = "@" + user.html_url
+        cell.avatarImg.downloadImageUsingAF(url: user.avatar_url ?? "")
+        cell.lblUserName.text = "@" + user.login!
+        cell.lblHtmlUrl.text = "@" + user.html_url!
         
 
         
@@ -104,12 +156,12 @@ class UserListTableViewController: UITableViewController {
      
         let user = self.users[indexPath.row]
         
-        NetworkHandler().getUserDetails(url: "\(gitHubUserListUrl)/" + user.login, completionHandler: { [self] (userDetails) in
+        NetworkHandler().getUserDetails(url: "\(gitHubUserListUrl)/" + user.login!, completionHandler: { [self] (userDetails) in
             print(users)
             DispatchQueue.main.async {
                 let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "UserDetailsViewController") as? UserDetailsViewController
                 vc?.avatarUrl = user.avatar_url
-                vc?.getUserDetails(userDetails: userDetails, accountType: user.type)
+                vc?.getUserDetails(userDetails: userDetails, accountType: user.type!)
                 self.navigationController?.pushViewController(vc!, animated: true)
             }
             
@@ -117,6 +169,7 @@ class UserListTableViewController: UITableViewController {
     }
     
 
+  
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
